@@ -8,6 +8,7 @@ android {
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -47,4 +48,5 @@ dependencies {
     implementation 'com.squareup.okhttp:okhttp:2.7.5'
     implementation 'com.google.maps.android:android-maps-utils:0.3+'
     implementation 'com.squareup.okhttp:okhttp-urlconnection:2.7.5'
+    implementation 'com.android.support:multidex:1.0.3'
 }
