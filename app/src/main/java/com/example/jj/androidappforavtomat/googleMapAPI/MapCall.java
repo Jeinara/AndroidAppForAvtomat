@@ -46,10 +46,8 @@ public class MapCall implements OnMapReadyCallback {
         setupGoogleMapScreenSettings(googleMap);
 
         DirectionsResult results
-                = getDirectionsDetails("55.680962, 37.717012","55.794141, 37.701635",TravelMode.DRIVING);
-        System.out.println("Построен маршрут ");
+                = getDirectionsDetails("55.747023, 37.857566","55.794141, 37.701635",TravelMode.DRIVING);
         if (results != null) {
-            System.out.println("Точно Построен маршрут ");
             addPolyline(results, googleMap);
             positionCamera(results.routes[overview], googleMap);
             addMarkersToMap(results, googleMap);
