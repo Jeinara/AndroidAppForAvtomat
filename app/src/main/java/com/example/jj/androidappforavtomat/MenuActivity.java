@@ -8,6 +8,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 
+import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -22,14 +23,13 @@ import com.example.jj.androidappforavtomat.cameraAPI.SensorFragment;
 import com.example.jj.androidappforavtomat.contactsAPI.ContactsFragment;
 import com.example.jj.androidappforavtomat.gitHubAuth.GitHubRepoListFragment;
 import com.example.jj.androidappforavtomat.googleMapAPI.GogleMap;
-import com.example.jj.androidappforavtomat.infoAPI.InfoPresenter;
 
 import java.util.ArrayList;
 
 public class MenuActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, CalculatorFragment.OnFragmentInteractionListener,
         SensorFragment.OnFragmentInteractionListener,GogleMap.OnFragmentInteractionListener,
-        GitHubRepoListFragment.OnFragmentInteractionListener, InfoPresenter.OnFragmentInteractionListener{
+        GitHubRepoListFragment.OnFragmentInteractionListener{
 
 
     public static Context contextOfApplication;
@@ -98,46 +98,74 @@ public class MenuActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
-        Fragment fragment = new Fragment();
-        Class FragmentClass = null;
         int id = item.getItemId();
         if (id == R.id.nav_calculator) {
-            FragmentClass = CalculatorFragment.class;
+            Fragment fragment = new Fragment();
+            Class FragmentClass = CalculatorFragment.class;
+            try{
+                fragment = (Fragment) FragmentClass.newInstance();
+            }catch (IllegalAccessException | InstantiationException e){
+                e.getLocalizedMessage();
+            }
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.container,fragment).commit();
+            item.setChecked(true);
             setTitle(item.getTitle());
         } else if (id == R.id.nav_map) {
-            FragmentClass = GogleMap.class;
+            Class google = GogleMap.class;
             Fragment mMapFragment = null;
+            try {
+                mMapFragment = (Fragment) google.newInstance();
+            } catch (IllegalAccessException | InstantiationException e) {
+                e.printStackTrace();
+            }
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.container,mMapFragment).commit();
             item.setChecked(true);
             setTitle(item.getTitle());
         } else if (id == R.id.nav_camera) {
-            FragmentClass = SensorFragment.class;
+
+            Fragment fragment = new Fragment();
+            Class FragmentClass = SensorFragment.class;
+            try{
+                fragment = (Fragment) FragmentClass.newInstance();
+            }catch (IllegalAccessException | InstantiationException e){
+                e.getLocalizedMessage();
+            }
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.container,fragment).commit();
+            item.setChecked(true);
             setTitle(item.getTitle());
-        } else if (id == R.id.nav_info) {
-            FragmentClass = InfoPresenter.class;
-            setTitle(item.getTitle());
+
         } else if (id == R.id.nav_manage) {
-            FragmentClass = GitHubRepoListFragment.class;
+            Fragment fragment = null;
+            Class FragmentClass = GitHubRepoListFragment.class;
             repoList = getIntent().getStringArrayListExtra("repoList");
+
+            try {
+                fragment = (Fragment) FragmentClass.newInstance();
+            } catch (IllegalAccessException | InstantiationException e) {
+                e.getLocalizedMessage();
+            }
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.container,fragment).commit();
+            item.setChecked(true);
             setTitle(item.getTitle());
+
         } else if (id == R.id.nav_contacts) {
-            FragmentClass = ContactsFragment.class;
+            Fragment fragment = new Fragment();
+            Class FragmentClass = ContactsFragment.class;
+            try{
+                fragment = (Fragment) FragmentClass.newInstance();
+            }catch (IllegalAccessException | InstantiationException e){
+                e.getLocalizedMessage();
+            }
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.container,fragment).commit();
+            item.setChecked(true);
             setTitle(item.getTitle());
-        } else if (id == R.id.nav_finish) {
-            finish();
-            System.exit(0);
-        }else {
-            return false;
         }
 
-        try {
-            fragment = (Fragment) FragmentClass.newInstance();
-        } catch (IllegalAccessException | InstantiationException e) {
-            e.getLocalizedMessage();
-        }
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.container,fragment).commit();
-        item.setChecked(true);
-        setTitle(item.getTitle());
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
