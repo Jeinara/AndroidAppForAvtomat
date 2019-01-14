@@ -6,6 +6,7 @@ import android.support.design.widget.TextInputEditText;
 import android.os.Bundle;
 import android.view.View;
 
+import com.example.jj.androidappforavtomat.MenuActivity;
 import com.example.jj.androidappforavtomat.R;
 
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 public class AuthGitHub extends Activity implements IAuthActivity{
     private IAuthPresenter iAuthPresenter;
     private TextInputEditText login, password;
+    private ArrayList<String> repoList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,7 +58,7 @@ public class AuthGitHub extends Activity implements IAuthActivity{
 
     @Override
     public void setRepo(ArrayList<String> repoList) {
-
+        this.repoList = repoList;
     }
 
 
@@ -69,10 +71,17 @@ public class AuthGitHub extends Activity implements IAuthActivity{
     @Override
     public void activateNextActivity(String login, String password, Boolean hasErrors) {
         if (!hasErrors) {
-            Intent intent = new Intent(AuthGitHub.this, SecondStepAuthGitHub.class);
-            intent.putExtra("login", login);
-            intent.putExtra("password", password);
-            startActivity(intent);
+            if (GitHubConnection.isAuth2Factor()) {
+                Intent intent = new Intent(AuthGitHub.this, SecondStepAuthGitHub.class);
+                intent.putExtra("login", login);
+                intent.putExtra("password", password);
+                startActivity(intent);
+            } else {
+                Intent intent = new Intent(AuthGitHub.this, MenuActivity.class);
+                intent.putExtra("login", login);
+                intent.putExtra("repoList", repoList);
+                startActivity(intent);
+            }
         }
     }
 }

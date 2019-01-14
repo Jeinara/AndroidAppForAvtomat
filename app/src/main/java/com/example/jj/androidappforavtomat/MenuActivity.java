@@ -3,13 +3,9 @@ package com.example.jj.androidappforavtomat;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-
-import android.view.View;
-import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -17,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.example.jj.androidappforavtomat.calculatorAPI.CalculatorFragment;
 import com.example.jj.androidappforavtomat.cameraAPI.SensorFragment;
@@ -30,8 +27,8 @@ import java.util.ArrayList;
 public class MenuActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, CalculatorFragment.OnFragmentInteractionListener,
         SensorFragment.OnFragmentInteractionListener,GogleMap.OnFragmentInteractionListener,
-        GitHubRepoListFragment.OnFragmentInteractionListener,InfoPresenter.OnFragmentInteractionListener{
-
+        GitHubRepoListFragment.OnFragmentInteractionListener, InfoPresenter.OnFragmentInteractionListener{
+    private TextView username;
 
     public static Context contextOfApplication;
     public static Context getContextOfApplication()
@@ -47,14 +44,6 @@ public class MenuActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -82,6 +71,8 @@ public class MenuActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+        username = (TextView) findViewById(R.id.usernameAndroid);
+        username.setText(getIntent().getExtras().getString("login"));
         return true;
     }
 
@@ -98,7 +89,7 @@ public class MenuActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-// Handle navigation view item clicks here.
+        // Handle navigation view item clicks here.
         Fragment fragment = new Fragment();
         Class FragmentClass = null;
         int id = item.getItemId();
