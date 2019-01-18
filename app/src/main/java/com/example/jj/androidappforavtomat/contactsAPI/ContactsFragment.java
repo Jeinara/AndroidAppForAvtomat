@@ -63,6 +63,7 @@ public class ContactsFragment extends ListFragment implements IContactsFragmentA
             }
         }
     }
+
     @Override
     public void setAdapterList(ArrayAdapter<Contact> adapter) {
         setListAdapter(adapter);
