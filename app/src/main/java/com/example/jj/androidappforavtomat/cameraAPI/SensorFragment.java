@@ -69,6 +69,7 @@ public class SensorFragment extends Fragment implements ISensorFragmentActivity 
 
     public static final int REQUEST_CODE_PERMISSION_WRITE_EXTERNAL_STORAGE = 122;
     public static final int REQUEST_CODE_PERMISSION_CAMERA = 123;
+    public static final int REQUEST_CODE_PERMISSION_ALL = 124;
 
     private OnFragmentInteractionListener mListener;
 
@@ -120,14 +121,11 @@ public class SensorFragment extends Fragment implements ISensorFragmentActivity 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
             permissionStatusForWES = applicationContext.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
             permissionStatusForC = applicationContext.checkSelfPermission(Manifest.permission.CAMERA);
-            if(permissionStatusForWES == PackageManager.PERMISSION_DENIED){
-                requestPermissions(new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                       REQUEST_CODE_PERMISSION_WRITE_EXTERNAL_STORAGE);
+            if(permissionStatusForWES == PackageManager.PERMISSION_DENIED || permissionStatusForC == PackageManager.PERMISSION_DENIED){
+                requestPermissions(new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.CAMERA},
+                        REQUEST_CODE_PERMISSION_ALL);
             }
-            if(permissionStatusForC == PackageManager.PERMISSION_DENIED){
-                requestPermissions(new String[] {Manifest.permission.CAMERA},
-                        REQUEST_CODE_PERMISSION_CAMERA);
-            }
+
             if((permissionStatusForC == PackageManager.PERMISSION_GRANTED)&&(permissionStatusForWES == PackageManager.PERMISSION_GRANTED)){
                 takePhotoButton.setEnabled(true);
             }
@@ -141,20 +139,14 @@ public class SensorFragment extends Fragment implements ISensorFragmentActivity 
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults){
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        if(requestCode == REQUEST_CODE_PERMISSION_WRITE_EXTERNAL_STORAGE && grantResults.length>0){
-            if(grantResults[0] == PackageManager.PERMISSION_GRANTED && permissionStatusForC == PackageManager.PERMISSION_GRANTED){
+        if(requestCode == REQUEST_CODE_PERMISSION_ALL && grantResults.length>0){
+            if(grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED){
                 takePhotoButton.setEnabled(true);
             }else {
                 takePhotoButton.setEnabled(false);
             }
         }
-        if(requestCode == REQUEST_CODE_PERMISSION_CAMERA && grantResults.length>0){
-            if(grantResults[0] == PackageManager.PERMISSION_GRANTED && permissionStatusForWES == PackageManager.PERMISSION_GRANTED){
-                takePhotoButton.setEnabled(true);
-            }else {
-                takePhotoButton.setEnabled(false);
-            }
-        }
+
     }
 
     private final SensorEventListener workingSensorEventListener = new SensorEventListener() {
